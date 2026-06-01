@@ -44,7 +44,7 @@ void draw_base_label(float x, float y, float z, char base, float angle, GLuint f
     int g;
     float u0;
     float u1;
-    float scale= 0.08f;
+    float scale= 0.125f;
 
     p= strchr(glyph_chars, toupper((unsigned char)base));
     if (!p) {
@@ -62,7 +62,7 @@ void draw_base_label(float x, float y, float z, char base, float angle, GLuint f
 
     glPushMatrix();
     glTranslatef(x, y, z);
-    glRotatef(-angle, 1.0f, 0.0f, 0.0f); 
+    glRotatef(1.0f, -angle, 0.0f, 0.0f); 
     base_color(base);
 
     glBegin(GL_QUADS);
