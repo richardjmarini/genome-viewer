@@ -184,6 +184,7 @@ int index_fasta(GenomeFile *gf, const char *path) {
              }
              gf->metadata[current_record].length+= length;
         }
+       
         offset= ftell(gf->file);
         gf->metadata[current_record].offset= offset;
     }

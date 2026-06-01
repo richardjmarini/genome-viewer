@@ -11,6 +11,9 @@
 #include <fasta.h>
 #include <viewer.h>
 
+#define WIDTH 3200.0f
+#define HEIGHT 1800.0f
+
 int main(int argc, char *argv[]) {
 
     GLFWwindow *window;
@@ -21,7 +24,7 @@ int main(int argc, char *argv[]) {
     int last_record= -1;
     int last_base_offset= 0;
     int line_skip= 0;
-    float aspect= 800.0f / 600.0f;;
+    float aspect= WIDTH / HEIGHT; 
     GLuint font_texture;
     float scroll_x;
 
@@ -42,7 +45,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    window= glfwCreateWindow(800, 600, "Genome-Viewer", NULL, NULL);
+    window= glfwCreateWindow((int)WIDTH, (int)HEIGHT, "Genome-Viewer", NULL, NULL);
     glfwMakeContextCurrent(window);
     glewInit();
 
@@ -54,15 +57,18 @@ int main(int argc, char *argv[]) {
         .current_record= 0,
         .base_offset= 0
     };
+
     glfwSetWindowUserPointer(window, &state);
     glfwSetKeyCallback(window, key_callback);
-
     init_font(&font_texture);
+
     while (!glfwWindowShouldClose(window)) {
 
         if (state.current_record != last_record || state.base_offset != last_base_offset) {
+
             free(sequence);
             render_metadata= gf->metadata[state.current_record];
+            LOG(DEBUG, "State {Record: %i, Offset: %li}", state.current_record, state.base_offset);
             line_skip= state.base_offset / FASTA_LINE_LENGTH;
             render_metadata.offset+= state.base_offset + line_skip;
             render_metadata.length= MAX_BASES;
@@ -70,6 +76,8 @@ int main(int argc, char *argv[]) {
             metadata= &render_metadata; 
             last_record= state.current_record;
             last_base_offset= state.base_offset;
+
+            LOG(DEBUG, "Rendering {Record: %i, Offset: %li}", state.current_record, metadata->offset);
         }
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -86,7 +94,6 @@ int main(int argc, char *argv[]) {
         glTranslatef(scroll_x, 0.0f, -8.0f); // center it
         glRotatef(angle, 1.0f, 0.0f, 0.0f); // spin on x
 
-        LOG(DEBUG, "Rendering {Offset: %li}", metadata->offset);
         render(sequence, metadata, angle, font_texture);
 
         angle+= 0.3f;   // auto-rotate

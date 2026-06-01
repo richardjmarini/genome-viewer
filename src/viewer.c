@@ -62,7 +62,7 @@ void draw_base_label(float x, float y, float z, char base, float angle, GLuint f
 
     glPushMatrix();
     glTranslatef(x, y, z);
-    glRotatef(1.0f, -angle, 0.0f, 0.0f); 
+    glRotatef(-angle, -angle, 0.0f, 0.0f); 
     base_color(base);
 
     glBegin(GL_QUADS);
@@ -107,7 +107,7 @@ void render(char *sequence, SequenceMetadata *metadata, float angle, GLuint font
     glEnd();
 
     // nucleotides as rungs 
-    glLineWidth(1.0f);
+    glLineWidth(1.5f);
     glBegin(GL_LINES);
     for(i= 0; i < metadata->length; i++) {
         t= i * (2.0f * M_PI / BASES_PER_TURN);
