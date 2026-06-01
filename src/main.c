@@ -22,6 +22,8 @@ int main(int argc, char *argv[]) {
     int last_base_offset= 0;
     int line_skip= 0;
     float aspect= 800.0f / 600.0f;;
+    GLuint font_texture;
+    float scroll_x;
 
     GenomeFile *gf= (GenomeFile *)malloc(sizeof(GenomeFile));
     gf->metadata= (SequenceMetadata *)malloc(sizeof(SequenceMetadata));
@@ -55,6 +57,7 @@ int main(int argc, char *argv[]) {
     glfwSetWindowUserPointer(window, &state);
     glfwSetKeyCallback(window, key_callback);
 
+    init_font(&font_texture);
     while (!glfwWindowShouldClose(window)) {
 
         if (state.current_record != last_record || state.base_offset != last_base_offset) {
@@ -77,11 +80,14 @@ int main(int argc, char *argv[]) {
 
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        glTranslatef(0.0f, -metadata->length * RISE_PER_BASE * 0.5f, -8.0f);  // center it
-        glRotatef(angle, 0.0f, 1.0f, 0.0f);                                   // spin on Y
+
+        scroll_x= -((state.base_offset + state.base_offset / FASTA_LINE_LENGTH) * RISE_PER_BASE) - (metadata->length * RISE_PER_BASE * 0.5f);
+
+        glTranslatef(scroll_x, 0.0f, -8.0f); // center it
+        glRotatef(angle, 1.0f, 0.0f, 0.0f); // spin on x
 
         LOG(DEBUG, "Rendering {Offset: %li}", metadata->offset);
-        render(sequence, metadata);
+        render(sequence, metadata, angle, font_texture);
 
         angle+= 0.3f;   // auto-rotate
 
