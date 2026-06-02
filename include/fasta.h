@@ -1,7 +1,7 @@
 #ifndef __FASTA_H__
 #define __FASTA_H__
 
-#define FASTA_LINE_LENGTH 60 // GRCh38 uses 60bp lines
+#define FASTA_LINE_LENGTH 80
 
 typedef enum {
     PRIMARY,     // primary chromosome

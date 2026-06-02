@@ -7,8 +7,6 @@
 #include <logger.h>
 #include <fasta.h>
 
-#define FASTA_LINE_LENGTH 60 // GRCh38 uses 60bp lines
-
 void parse_header(const char *line, SequenceMetadata *metadata) {
 
     char buf[2048];

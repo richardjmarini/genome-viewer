@@ -11,9 +11,6 @@
 #include <fasta.h>
 #include <viewer.h>
 
-#define WIDTH 3200.0f
-#define HEIGHT 1800.0f
-
 int main(int argc, char *argv[]) {
 
     GLFWwindow *window;
@@ -24,9 +21,11 @@ int main(int argc, char *argv[]) {
     int last_record= -1;
     int last_base_offset= 0;
     int line_skip= 0;
-    float aspect= WIDTH / HEIGHT; 
+    float aspect;
     GLuint font_texture;
     float scroll_x;
+    GLFWmonitor *monitor;
+    const GLFWvidmode *videoMode;
 
     GenomeFile *gf= (GenomeFile *)malloc(sizeof(GenomeFile));
     gf->metadata= (SequenceMetadata *)malloc(sizeof(SequenceMetadata));
@@ -44,8 +43,15 @@ int main(int argc, char *argv[]) {
         LOG(ERROR, "could not initialize gl");
         return -1;
     }
+ 
+    monitor= glfwGetPrimaryMonitor();
+    videoMode= glfwGetVideoMode(monitor);
+    if(videoMode) {
+        LOG(INFO, "Screen Resolution: %dx%d\n", videoMode->width, videoMode->height);
+    }
 
-    window= glfwCreateWindow((int)WIDTH, (int)HEIGHT, "Genome-Viewer", NULL, NULL);
+    aspect= videoMode->width / videoMode->height;
+    window= glfwCreateWindow((int)videoMode->width, (int)videoMode->height, "Genome-Viewer", NULL, NULL);
     glfwMakeContextCurrent(window);
     glewInit();
 

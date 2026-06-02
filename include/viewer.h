@@ -1,10 +1,10 @@
 #ifndef __VIEWER_H__
 #define __VIEWER_H__
 
-#define BASES_PER_TURN 25.5f
+#define BASES_PER_TURN 12.5f
 #define HELIX_RADIUS 1.0f
 #define RISE_PER_BASE 0.34f
-#define MAX_BASES 200
+#define MAX_BASES 80
 #define GLYPH_SIZE 8
 #define NUM_GLYPHS 5  // A T G C N
 
