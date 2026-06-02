@@ -38,13 +38,15 @@ void init_font(GLuint *font_texture) {
 
 }
 
-void draw_base_label(float x, float y, float z, char base, float angle, GLuint font_texture) {
+void draw_base_label(float x, float y, float z, char base, GLuint font_texture) {
 
     char *p;
     int g;
     float u0;
     float u1;
     float scale= 0.125f;
+    float m[26];
+    float tz;
 
     p= strchr(glyph_chars, toupper((unsigned char)base));
     if (!p) {
@@ -62,7 +64,18 @@ void draw_base_label(float x, float y, float z, char base, float angle, GLuint f
 
     glPushMatrix();
     glTranslatef(x, y, z);
-    glRotatef(-angle, -angle, 0.0f, 0.0f); 
+
+    glGetFloatv(GL_MODELVIEW_MATRIX, m);
+
+    tz= m[14];
+
+    m[0]=1; m[4]=0; m[8] =0;
+    m[1]=0; m[5]=1; m[9] =0;
+    m[2]=0; m[6]=0; m[10]=1;
+    
+    m[14] = tz + 0.3f; 
+
+    glLoadMatrixf(m);
     base_color(base);
 
     glBegin(GL_QUADS);
@@ -78,7 +91,7 @@ void draw_base_label(float x, float y, float z, char base, float angle, GLuint f
     glDisable(GL_TEXTURE_2D);
 }
 
-void render(char *sequence, SequenceMetadata *metadata, float angle, GLuint font_texture) {
+void render(char *sequence, SequenceMetadata *metadata, GLuint font_texture) {
 
     float t;
     int i;
@@ -137,9 +150,9 @@ void render(char *sequence, SequenceMetadata *metadata, float angle, GLuint font
         z2= HELIX_RADIUS * sin(t + M_PI);
 
         // 5' label
-        draw_base_label(x, y1 * 1.4f, z1 * 1.4f, sequence[i], angle, font_texture);
+        draw_base_label(x, y1 * 1.4f, z1 * 1.4f, sequence[i], font_texture);
         // 3' complement label
-        draw_base_label(x, y2 * 1.4f, z2 * 1.4f, complement(sequence[i]), angle, font_texture);
+        draw_base_label(x, y2 * 1.4f, z2 * 1.4f, complement(sequence[i]), font_texture);
     }
 }
 

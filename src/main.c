@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
         glTranslatef(scroll_x, 0.0f, -8.0f); // center it
         glRotatef(angle, 1.0f, 0.0f, 0.0f); // spin on x
 
-        render(sequence, metadata, angle, font_texture);
+        render(sequence, metadata, font_texture);
 
         angle+= 0.3f;   // auto-rotate
 

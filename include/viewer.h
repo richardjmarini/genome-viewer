@@ -50,7 +50,7 @@ static const unsigned char base_glyphs[5][2][8] = {
 static const char glyph_chars[] = "ATGCN";
 
 void init_font(GLuint *font_texture);
-void render(char *sequence, SequenceMetadata *metadata, float angle, GLuint font_texture);
+void render(char *sequence, SequenceMetadata *metadata, GLuint font_texture);
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 
 
