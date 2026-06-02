@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
             last_record= state.current_record;
             last_base_offset= state.base_offset;
 
-            LOG(DEBUG, "Rendering {Record: %i, Offset: %li}", state.current_record, metadata->offset);
+            LOG(DEBUG, "Rendering {Record: %i, Offset: %li, %s}", state.current_record, metadata->offset, sequence);
         }
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
