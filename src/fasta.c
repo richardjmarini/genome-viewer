@@ -182,6 +182,9 @@ int index_fasta(GenomeFile *gf, const char *path) {
                  length--;
              }
              gf->metadata[current_record].length+= length;
+             if(gf->line_length == 0) {
+                 gf->line_length= length;
+             }
         }
     }
 

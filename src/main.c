@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
             free(sequence);
             render_metadata= gf->metadata[state.current_record];
             LOG(DEBUG, "State {Record: %i, Offset: %li}", state.current_record, state.base_offset);
-            line_skip= state.base_offset / FASTA_LINE_LENGTH;
+            line_skip= state.base_offset / gf->line_length;
             render_metadata.offset+= state.base_offset + line_skip;
             render_metadata.length= MAX_BASES;
             sequence= fetch_sequence(gf->file, &render_metadata);
@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
-        scroll_x= -((state.base_offset + state.base_offset / FASTA_LINE_LENGTH) * RISE_PER_BASE) - (metadata->length * RISE_PER_BASE * 0.5f);
+        scroll_x= -((state.base_offset + state.base_offset / gf->line_length) * RISE_PER_BASE) - (metadata->length * RISE_PER_BASE * 0.5f);
 
         glTranslatef(scroll_x, 0.0f, -8.0f); // center it
         glRotatef(angle, 1.0f, 0.0f, 0.0f); // spin on x

@@ -1,8 +1,6 @@
 #ifndef __FASTA_H__
 #define __FASTA_H__
 
-#define FASTA_LINE_LENGTH 80
-
 typedef enum {
     PRIMARY,     // primary chromosome
     AT_LOCUS,    // alternate haplotype
@@ -26,12 +24,14 @@ typedef struct {
     long end;             // end coordinate o chromosome
 
     long offset;          // byte position of sequence
-    long length;          // number of base pairs
+    long length;          // number of base pairs in whole sequence
+
  } SequenceMetadata;
 
 
 typedef struct {
     FILE *file;
+    int line_length; // how many base pairs per line
     int record_count;
     SequenceMetadata  *metadata;
 } GenomeFile;
