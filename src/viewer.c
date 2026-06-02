@@ -99,7 +99,7 @@ void render(char *sequence, SequenceMetadata *metadata, float angle, GLuint font
     // 3' rail
     glLineWidth(3.0f);
     glBegin(GL_LINE_STRIP);
-    glColor3f(0.9f, 0.9f, 0.9f);
+    glColor3f(0.5f, 0.5f, 0.5f);
     for(i= 0; i < metadata->length; i++) {
         t= i * (2.0f * M_PI / BASES_PER_TURN) + M_PI;
         glVertex3f(i * RISE_PER_BASE, HELIX_RADIUS * cos(t), HELIX_RADIUS * sin(t));

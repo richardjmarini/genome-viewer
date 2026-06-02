@@ -2,9 +2,9 @@
 #define __LOGGER_H__
 
 enum {
-    ERROR,
-    WARN,
     INFO,
+    WARN,
+    ERROR,
     DEBUG
 };
 

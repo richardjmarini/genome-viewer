@@ -3,7 +3,7 @@ OBJ_DIR = obj
 SRC_DIR = src
 TARGET = gv
 LIBS = -lz -lGL -lGLEW -lglfw -lm
-CFLAGS= -Wall -DLOG_LEVEL=4 -Iinclude
+CFLAGS= -Wall -DLOG_LEVEL=0 -Iinclude
 
 SRCS= $(wildcard $(SRC_DIR)/*.c)
 OBJS= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))

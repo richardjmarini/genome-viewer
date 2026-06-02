@@ -1,10 +1,10 @@
 #ifndef __VIEWER_H__
 #define __VIEWER_H__
 
-#define BASES_PER_TURN 12.5f
-#define HELIX_RADIUS 1.0f
-#define RISE_PER_BASE 0.34f
-#define MAX_BASES 80
+#define BASES_PER_TURN 21.0f  // 10.5 bases per strand per twist
+#define HELIX_RADIUS 1.0f     // 1nm
+#define RISE_PER_BASE 0.34f   // 0.34nm
+#define MAX_BASES 4096        // how many can the viewer display per fasta offset
 #define GLYPH_SIZE 8
 #define NUM_GLYPHS 5  // A T G C N
 

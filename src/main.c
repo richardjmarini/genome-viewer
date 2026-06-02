@@ -30,14 +30,14 @@ int main(int argc, char *argv[]) {
     GenomeFile *gf= (GenomeFile *)malloc(sizeof(GenomeFile));
     gf->metadata= (SequenceMetadata *)malloc(sizeof(SequenceMetadata));
 
-    LOG(DEBUG, "Reading %s", argv[1]);
+    LOG(INFO, "Reading %s", argv[1]);
      
     if(index_fasta(gf, argv[1]) != 0) {
         LOG(ERROR, "failed to index fasta file");
         return -1;
     }
 
-    LOG(DEBUG, "Indexes Created {Total: %d}", gf->record_count);
+    LOG(INFO, "Indexes Created {Total: %d}", gf->record_count);
 
     if(!glfwInit()) {
         LOG(ERROR, "could not initialize gl");
