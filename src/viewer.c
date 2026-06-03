@@ -42,11 +42,10 @@ void draw_base_label(float x, float y, float z, char base, GLuint font_texture) 
 
     char *p;
     int g;
-    float u0;
-    float u1;
-    float scale= 0.125f;
+    float u0, u1;
+    float scale= 0.0625; 
     float m[26];
-    float tz;
+    float tx, ty, tz;
 
     p= strchr(glyph_chars, toupper((unsigned char)base));
     if (!p) {
@@ -67,22 +66,28 @@ void draw_base_label(float x, float y, float z, char base, GLuint font_texture) 
 
     glGetFloatv(GL_MODELVIEW_MATRIX, m);
 
+    // extract current position 
+    tx= m[12];
+    ty= m[13];
     tz= m[14];
 
-    m[0]=1; m[4]=0; m[8] =0;
-    m[1]=0; m[5]=1; m[9] =0;
-    m[2]=0; m[6]=0; m[10]=1;
+    // x= 1,0,0 
+    // y= 0,1,0
+    // z= 0,0,1
+    m[0]=1; m[4]=0; m[8] =0; m[12]= tx;
+    m[1]=0; m[5]=1; m[9] =0; m[13]= ty;
+    m[2]=0; m[6]=0; m[10]=1; m[14]= tz + 0.3f;
     
-    m[14] = tz + 0.3f; 
+    m[15]= 1;   
 
     glLoadMatrixf(m);
     base_color(base);
 
     glBegin(GL_QUADS);
-    glTexCoord2f(u0, 1.0f); glVertex3f(0.0f, -scale, -scale);
-    glTexCoord2f(u1, 1.0f); glVertex3f(0.0f,  scale, -scale);
-    glTexCoord2f(u1, 0.0f); glVertex3f(0.0f,  scale,  scale);
-    glTexCoord2f(u0, 0.0f); glVertex3f(0.0f, -scale,  scale);
+    glTexCoord2f(u0, 1.0f); glVertex3f(-scale, -scale, 0.0f);
+    glTexCoord2f(u1, 1.0f); glVertex3f( scale, -scale, 0.0f);
+    glTexCoord2f(u1, 0.0f); glVertex3f( scale,  scale, 0.0f);
+    glTexCoord2f(u0, 0.0f); glVertex3f(-scale,  scale, 0.0f);
     glEnd();
 
     glPopMatrix();
