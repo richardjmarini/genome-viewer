@@ -190,7 +190,7 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
              break;
          case GLFW_KEY_RIGHT:
              state->base_offset++;
-             if(state->base_offset + 1 > state->gf->metadata[state->current_record].length) {
+             if(state->base_offset >= state->gf->metadata[state->current_record].length) {
                  state->base_offset= state->gf->metadata[state->current_record].length - 1;
              }
              break;

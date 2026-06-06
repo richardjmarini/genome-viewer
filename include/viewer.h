@@ -4,7 +4,8 @@
 #define BASES_PER_TURN 21.0f  // 10.5 bases per strand per twist
 #define HELIX_RADIUS 1.0f     // 1nm
 #define RISE_PER_BASE 0.34f   // 0.34nm
-#define MAX_BASES 4096        // how many can the viewer display per fasta offset
+#define MAX_BASES 1024      // how many can the viewer display per fasta offset
+#define CHUNK_SIZE (MAX_BASES * 4)  // fetch 4x the visible window
 #define GLYPH_SIZE 8
 #define NUM_GLYPHS 5  // A T G C N
 
@@ -12,6 +13,7 @@ typedef struct {
     GenomeFile *gf;
     int current_record;
     long base_offset;
+    long chunk_start;
 } ViewerState;
 
 static inline void base_color(char base) {

@@ -19,13 +19,15 @@ int main(int argc, char *argv[]) {
     SequenceMetadata *metadata;
     SequenceMetadata render_metadata;
     int last_record= -1;
-    int last_base_offset= 0;
     int line_skip= 0;
     float aspect;
     GLuint font_texture;
     float scroll_x;
     GLFWmonitor *monitor;
     const GLFWvidmode *videoMode;
+    long bases_remaining;
+    long chunk_local_offset;
+    char *render_sequence;
 
     GenomeFile *gf= (GenomeFile *)malloc(sizeof(GenomeFile));
     gf->metadata= (SequenceMetadata *)malloc(sizeof(SequenceMetadata));
@@ -70,21 +72,39 @@ int main(int argc, char *argv[]) {
 
     while (!glfwWindowShouldClose(window)) {
 
-        if (state.current_record != last_record || state.base_offset != last_base_offset) {
+        if (state.current_record != last_record || state.base_offset < state.chunk_start || state.base_offset + MAX_BASES > state.chunk_start + CHUNK_SIZE) {
 
             free(sequence);
+
+            state.chunk_start= (state.base_offset > MAX_BASES) ? state.base_offset - MAX_BASES : 0;
+
             render_metadata= gf->metadata[state.current_record];
+
             LOG(DEBUG, "State {Record: %i, Offset: %li}", state.current_record, state.base_offset);
-            line_skip= state.base_offset / gf->line_length;
-            render_metadata.offset+= state.base_offset + line_skip;
-            render_metadata.length= MAX_BASES;
+
+            line_skip= state.chunk_start / gf->line_length;
+            render_metadata.offset+= state.chunk_start + line_skip;
+            render_metadata.length= CHUNK_SIZE;
+
+            bases_remaining= gf->metadata[state.current_record].length - state.chunk_start;
+            if(render_metadata.length > bases_remaining) {
+                render_metadata.length= bases_remaining;
+            }
+
             sequence= fetch_sequence(gf->file, &render_metadata);
             metadata= &render_metadata; 
             last_record= state.current_record;
-            last_base_offset= state.base_offset;
 
             LOG(DEBUG, "Rendering {Record: %i, Offset: %li, %s}", state.current_record, metadata->offset, sequence);
         }
+
+        chunk_local_offset= state.base_offset - state.chunk_start;
+        render_sequence= sequence + chunk_local_offset;
+        render_metadata.length= MAX_BASES;// only show MAX_BASES worth
+    
+        bases_remaining= gf->metadata[state.current_record].length - state.base_offset;
+        if (render_metadata.length > bases_remaining)
+            render_metadata.length= bases_remaining;
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
@@ -95,12 +115,13 @@ int main(int argc, char *argv[]) {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
-        scroll_x= -((state.base_offset + state.base_offset / gf->line_length) * RISE_PER_BASE) - (metadata->length * RISE_PER_BASE * 0.5f);
+        //scroll_x= -((state.base_offset + state.base_offset / gf->line_length) * RISE_PER_BASE) - (metadata->length * RISE_PER_BASE * 0.5f);
+        scroll_x= -(render_metadata.length * RISE_PER_BASE * 0.5f);
 
         glTranslatef(scroll_x, 0.0f, -8.0f); // center it
         glRotatef(angle, 1.0f, 0.0f, 0.0f); // spin on x
 
-        render(sequence, metadata, font_texture);
+        render(render_sequence, metadata, font_texture);
 
         angle+= 0.3f;   // auto-rotate
 
