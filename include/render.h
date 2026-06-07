@@ -14,7 +14,8 @@ typedef struct {
     int current_record;
     long base_offset;
     long chunk_start;
-} ViewerState;
+    float angle;
+} RenderState;
 
 static inline void base_color(char base) {
     switch(toupper((unsigned char)base)) {

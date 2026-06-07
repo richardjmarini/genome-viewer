@@ -163,7 +163,7 @@ void render(char *sequence, SequenceMetadata *metadata, GLuint font_texture) {
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
 
-     ViewerState *state= glfwGetWindowUserPointer(window);
+     RenderState *state= glfwGetWindowUserPointer(window);
 
      if(action != GLFW_PRESS && action != GLFW_REPEAT) {
          return;
