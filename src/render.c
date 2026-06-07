@@ -9,7 +9,7 @@
 
 #include <logger.h>
 #include <fasta.h>
-#include <viewer.h>
+#include <render.h>
 
 void init_font(GLuint *font_texture) {
 

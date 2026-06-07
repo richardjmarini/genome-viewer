@@ -1,5 +1,5 @@
-#ifndef __VIEWER_H__
-#define __VIEWER_H__
+#ifndef __RENDER_H__
+#define __RENDER_H__
 
 #define BASES_PER_TURN 21.0f  // 10.5 bases per strand per twist
 #define HELIX_RADIUS 1.0f     // 1nm
